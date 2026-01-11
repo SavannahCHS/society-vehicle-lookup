@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Society Vehicle Records</title>
+  <title>Savannah CHS – Vehicle Records</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,8 +20,19 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    h1 {
+    .header {
       text-align: center;
+      margin-bottom: 20px;
+    }
+    .header img {
+      max-height: 90px;
+      display: block;
+      margin: 0 auto 4px auto; /* small gap below logo */
+    }
+    .tagline {
+      font-style: italic;
+      color: #666;
+      margin: 0 0 6px 0; /* directly under logo */
     }
     input {
       width: 100%;
@@ -55,12 +67,6 @@
     tr:nth-child(even) {
       background: #f2f2f2;
     }
-    .note {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #555;
-      text-align: center;
-    }
     #errorMsg {
       display: none;
       color: #b00020;
@@ -68,11 +74,25 @@
       font-weight: bold;
       margin-top: 10px;
     }
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>Vehicle Registration Records</h1>
+
+    <!-- HEADER WITH LOGO -->
+    <div class="header">
+      <img src="https://drive.google.com/thumbnail?id=1S-8K9LeZ_WDqn1zvzUC5-HksTm1GBj4g&sz=w300" alt="Savannah CHS Logo" />
+      <div class="tagline">A Legacy of Elegant Living</div>
+      <h1>Vehicle Registration Records</h1>
+    </div>
+    </div>
 
     <p style="text-align:center; color:#444;">
       Please enter your <b>Flat Number</b> and <b>Email ID</b> entered during Google Form submission to view your submitted details.
@@ -80,6 +100,7 @@
 
     <input type="text" id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)" />
     <input type="email" id="emailInput" autocomplete="off" placeholder="Enter Email ID (same as used in Google Form)" />
+
     <button onclick="validateAndSearch()">View My Details</button>
 
     <p id="errorMsg"></p>
@@ -92,17 +113,18 @@
     <div class="note">
       ℹ️ Data is fetched live from Google Form master sheet. View-only.
     </div>
+
   </div>
 
   <script>
-    // Google Sheet details
+    // ================= CONFIG =================
     const SHEET_ID = "1hD0ph0guA7-EEFyN_N2sp4AIoKYNJ1jQDbqr8sfcRtg";
-    const SHEET_NAME = "Form Responses 1"; // change if your tab name is different
-
+    const SHEET_NAME = "Form Responses 1";
     const url = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
+
     let allRows = [];
 
-    // Fetch data on load, but DO NOT display it
+    // ================= FETCH DATA =================
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -110,21 +132,19 @@
       })
       .catch(() => {
         const errorMsg = document.getElementById('errorMsg');
-        errorMsg.textContent = 'Unable to load data from server.';
+        errorMsg.textContent = 'Unable to load data. Please try again later.';
         errorMsg.style.display = 'block';
       });
 
+    // ================= RENDER TABLE =================
     function renderTable(data) {
       const thead = document.getElementById("tableHead");
       const tbody = document.getElementById("tableBody");
       thead.innerHTML = "";
       tbody.innerHTML = "";
 
-      if (!data || data.length === 0) {
-        return;
-      }
+      if (!data || data.length === 0) return;
 
-      // Headers
       const headerRow = document.createElement('tr');
       Object.keys(data[0]).forEach(col => {
         const th = document.createElement('th');
@@ -133,7 +153,6 @@
       });
       thead.appendChild(headerRow);
 
-      // Rows
       data.forEach(row => {
         const tr = document.createElement('tr');
         Object.keys(data[0]).forEach(col => {
@@ -145,6 +164,7 @@
       });
     }
 
+    // ================= VALIDATION + SEARCH =================
     function validateAndSearch() {
       const flatVal = document.getElementById("flatInput").value.trim().toUpperCase();
       const emailVal = document.getElementById("emailInput").value.trim().toLowerCase();
@@ -157,6 +177,14 @@
 
       if (!flatVal || !emailVal) {
         errorMsg.textContent = "Please enter both Flat Number and Email ID.";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      // Flat format validation: K-103, A1-101, P-1101
+      const flatPattern = /^[A-Z]{1,2}[0-9]?\-\d{3,4}$/;
+      if (!flatPattern.test(flatVal)) {
+        errorMsg.textContent = "Enter flat no in proper format (e.g. K-103)";
         errorMsg.style.display = "block";
         return;
       }
@@ -177,5 +205,6 @@
       renderTable(filtered);
     }
   </script>
+
 </body>
 </html>
