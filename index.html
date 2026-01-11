@@ -6,10 +6,8 @@
   <title>Savannah CHS – Vehicle Registration Records</title>
 
   <style>
-    /* RESET – prevents unexpected white space (GitHub Pages safe) */
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       padding: 0;
@@ -17,20 +15,19 @@
       background: #f5f7fa;
     }
 
-    /* SINGLE CONTAINER – NO EMPTY BLOCKS */
     .container {
       max-width: 900px;
-      margin: 16px auto; /* small top margin only */
+      margin: 20px auto;
       background: #ffffff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    /* HEADER */
+    /* ===== HEADER ===== */
     .header {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .logo {
@@ -39,11 +36,8 @@
       max-height: 45px; /* desktop */
     }
 
-    /* Mobile logo smaller */
     @media (max-width: 600px) {
-      .logo {
-        max-height: 32px;
-      }
+      .logo { max-height: 32px; }
     }
 
     .divider {
@@ -58,18 +52,18 @@
       font-size: 14px;
       font-style: italic;
       color: #666;
-      margin: 0 0 6px 0; /* close to logo */
+      margin-bottom: 6px;
     }
 
     .page-title {
-      margin: 6px 0 14px 0;
       font-size: 22px;
       font-weight: bold;
-      color: #222;
+      margin: 6px 0 14px 0;
       text-align: center;
+      color: #222;
     }
 
-    /* CONTENT */
+    /* ===== FORM ===== */
     .info {
       text-align: center;
       color: #444;
@@ -102,29 +96,55 @@
       margin-top: 10px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+    /* ===== CARDS ===== */
+    #cardContainer {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
     }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
+    @media (min-width: 768px) {
+      #cardContainer {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
-    th {
-      background: #2c7be5;
-      color: white;
+    .data-card {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
 
-    tr:nth-child(even) {
-      background: #f2f2f2;
+    .card-field {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed #ddd;
+      gap: 10px;
+    }
+
+    .card-field:last-child {
+      border-bottom: none;
+    }
+
+    .card-label {
+      font-weight: bold;
+      color: #444;
+      flex: 1;
+    }
+
+    .card-value {
+      color: #222;
+      text-align: right;
+      flex: 1;
+      word-break: break-word;
     }
 
     .note {
-      margin-top: 14px;
+      margin-top: 18px;
       font-size: 14px;
       color: #555;
       text-align: center;
@@ -135,19 +155,20 @@
 
   <div class="container">
 
-    <!-- HEADER (NO EMPTY DIV ABOVE) -->
+    <!-- HEADER -->
     <div class="header">
       <img class="logo" src="https://drive.google.com/thumbnail?id=1S-8K9LeZ_WDqn1zvzUC5-HksTm1GBj4g&sz=w200" alt="Savannah CHS Logo" />
       <div class="divider"></div>
       <div class="tagline">A Legacy of Elegant Living</div>
-      <h2 class="page-title">Vehicle Registration Records</h2>
+      <div class="page-title">Vehicle Registration Records</div>
     </div>
 
-    <!-- MAIN FORM -->
+    <!-- INFO -->
     <div class="info">
       Please enter your <b>Flat Number</b> and <b>Email ID</b> entered during Google Form submission to view your submitted details.
     </div>
 
+    <!-- FORM -->
     <input type="text" id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)" />
     <input type="email" id="emailInput" autocomplete="off" placeholder="Enter Email ID (same as used in Google Form)" />
 
@@ -155,10 +176,8 @@
 
     <p id="errorMsg"></p>
 
-    <table id="dataTable" style="display:none;">
-      <thead id="tableHead"></thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+    <!-- CARD OUTPUT -->
+    <div id="cardContainer"></div>
 
     <div class="note">
       ℹ️ Data is fetched live from Google Form master sheet. View-only.
@@ -167,12 +186,14 @@
   </div>
 
   <script>
+    /* ===== CONFIG ===== */
     const SHEET_ID = "1hD0ph0guA7-EEFyN_N2sp4AIoKYNJ1jQDbqr8sfcRtg";
     const SHEET_NAME = "Form Responses 1";
     const url = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
 
     let allRows = [];
 
+    /* ===== FETCH DATA ===== */
     fetch(url)
       .then(res => res.json())
       .then(data => { allRows = Array.isArray(data) ? data : []; })
@@ -182,42 +203,48 @@
         errorMsg.style.display = 'block';
       });
 
-    function renderTable(data) {
-      const thead = document.getElementById("tableHead");
-      const tbody = document.getElementById("tableBody");
-      thead.innerHTML = "";
-      tbody.innerHTML = "";
+    /* ===== RENDER CARDS ===== */
+    function renderCards(data) {
+      const container = document.getElementById("cardContainer");
+      container.innerHTML = "";
 
       if (!data || data.length === 0) return;
 
-      const headerRow = document.createElement('tr');
-      Object.keys(data[0]).forEach(col => {
-        const th = document.createElement('th');
-        th.textContent = col;
-        headerRow.appendChild(th);
-      });
-      thead.appendChild(headerRow);
-
       data.forEach(row => {
-        const tr = document.createElement('tr');
-        Object.keys(data[0]).forEach(col => {
-          const td = document.createElement('td');
-          td.textContent = row[col] ?? '';
-          tr.appendChild(td);
+        const card = document.createElement("div");
+        card.className = "data-card";
+
+        Object.keys(row).forEach(key => {
+          const field = document.createElement("div");
+          field.className = "card-field";
+
+          const label = document.createElement("div");
+          label.className = "card-label";
+          label.textContent = key;
+
+          const value = document.createElement("div");
+          value.className = "card-value";
+          value.textContent = row[key] ?? "";
+
+          field.appendChild(label);
+          field.appendChild(value);
+          card.appendChild(field);
         });
-        tbody.appendChild(tr);
+
+        container.appendChild(card);
       });
     }
 
+    /* ===== VALIDATION + SEARCH ===== */
     function validateAndSearch() {
       const flatVal = document.getElementById("flatInput").value.trim().toUpperCase();
       const emailVal = document.getElementById("emailInput").value.trim().toLowerCase();
       const errorMsg = document.getElementById("errorMsg");
-      const table = document.getElementById("dataTable");
+      const cardContainer = document.getElementById("cardContainer");
 
       errorMsg.style.display = "none";
       errorMsg.textContent = "";
-      table.style.display = "none";
+      cardContainer.innerHTML = "";
 
       if (!flatVal || !emailVal) {
         errorMsg.textContent = "Please enter both Flat Number and Email ID.";
@@ -244,8 +271,7 @@
         return;
       }
 
-      table.style.display = "table";
-      renderTable(filtered);
+      renderCards(filtered);
     }
   </script>
 
