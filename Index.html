@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Society Vehicle Records</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      width: 100%;
+      background: #2c7be5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #2c7be5;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+    }
+    #errorMsg {
+      display: none;
+      color: #b00020;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vehicle Registration Records</h1>
+
+    <p style="text-align:center; color:#444;">
+      Please enter your <b>Flat Number</b> and <b>Email ID</b> entered during Google Form submission to view your submitted details.
+    </p>
+
+    <input type="text" id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)" />
+    <input type="email" id="emailInput" autocomplete="off" placeholder="Enter Email ID (same as used in Google Form)" />
+    <button onclick="validateAndSearch()">View My Details</button>
+
+    <p id="errorMsg"></p>
+
+    <table id="dataTable" style="display:none;">
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+
+    <div class="note">
+      ℹ️ Data is fetched live from Google Form master sheet. View-only.
+    </div>
+  </div>
+
+  <script>
+    // Google Sheet details
+    const SHEET_ID = "1hD0ph0guA7-EEFyN_N2sp4AIoKYNJ1jQDbqr8sfcRtg";
+    const SHEET_NAME = "Form Responses 1"; // change if your tab name is different
+
+    const url = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
+    let allRows = [];
+
+    // Fetch data on load, but DO NOT display it
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        allRows = Array.isArray(data) ? data : [];
+      })
+      .catch(() => {
+        const errorMsg = document.getElementById('errorMsg');
+        errorMsg.textContent = 'Unable to load data from server.';
+        errorMsg.style.display = 'block';
+      });
+
+    function renderTable(data) {
+      const thead = document.getElementById("tableHead");
+      const tbody = document.getElementById("tableBody");
+      thead.innerHTML = "";
+      tbody.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        return;
+      }
+
+      // Headers
+      const headerRow = document.createElement('tr');
+      Object.keys(data[0]).forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+
+      // Rows
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        Object.keys(data[0]).forEach(col => {
+          const td = document.createElement('td');
+          td.textContent = row[col] ?? '';
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function validateAndSearch() {
+      const flatVal = document.getElementById("flatInput").value.trim().toUpperCase();
+      const emailVal = document.getElementById("emailInput").value.trim().toLowerCase();
+      const errorMsg = document.getElementById("errorMsg");
+      const table = document.getElementById("dataTable");
+
+      errorMsg.style.display = "none";
+      errorMsg.textContent = "";
+      table.style.display = "none";
+
+      if (!flatVal || !emailVal) {
+        errorMsg.textContent = "Please enter both Flat Number and Email ID.";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      const filtered = allRows.filter(row => {
+        const flat = (row['Flat Number'] || row['Flat No'] || row['Flat'] || '').toUpperCase();
+        const email = (row['Email Address'] || row['Email'] || '').toLowerCase();
+        return flat === flatVal && email === emailVal;
+      });
+
+      if (filtered.length === 0) {
+        errorMsg.textContent = "❌ No records found. Please ensure Flat Number and Email ID are the same as entered in the Google Form.";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      table.style.display = "table";
+      renderTable(filtered);
+    }
+  </script>
+</body>
+</html>
