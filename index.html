@@ -252,9 +252,9 @@
         return;
       }
 
-      const flatPattern = /^[A-Z]{1,2}[0-9]?\-\d{3,4}$/;
+      const flatPattern = /^[A-Z]{1,2}[0-9]?-(?:\d{3,4}|[A-Z]\d)$/;
       if (!flatPattern.test(flatVal)) {
-        errorMsg.textContent = "Enter flat no in proper format (e.g. K-103)";
+        errorMsg.textContent = Enter flat no in proper format (e.g. K-103, A1-101, O-S2);
         errorMsg.style.display = "block";
         return;
       }
@@ -277,3 +277,4 @@
 
 </body>
 </html>
+
