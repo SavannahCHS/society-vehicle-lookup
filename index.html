@@ -32,19 +32,24 @@
 
     .logo {
       display: block;
-      margin: 0 auto 2px auto;
-      max-height: 45px; /* desktop */
+      margin: 0 auto 4px auto;
+      max-height: 45px;
+      max-width: 100%;
+      width: auto;
+      height: auto;
     }
 
     @media (max-width: 600px) {
-      .logo { max-height: 32px; }
+      .logo {
+        max-height: 32px;
+      }
     }
 
     .divider {
       width: 50px;
       height: 2px;
       background: #2c7be5;
-      margin: 2px auto 4px auto;
+      margin: 4px auto;
       border-radius: 2px;
     }
 
@@ -157,7 +162,7 @@
 
     <!-- HEADER -->
     <div class="header">
-      <img class="logo" src="https://drive.google.com/thumbnail?id=1S-8K9LeZ_WDqn1zvzUC5-HksTm1GBj4g&sz=w200" alt="Savannah CHS Logo" />
+      <img class="logo" src="./savannah-logo.png" alt="Savannah CHS Logo" />
       <div class="divider"></div>
       <div class="tagline">A Legacy of Elegant Living</div>
       <div class="page-title">Vehicle Registration Records</div>
@@ -169,8 +174,11 @@
     </div>
 
     <!-- FORM -->
-    <input type="text" id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)" />
-    <input type="email" id="emailInput" autocomplete="off" placeholder="Enter Email ID (same as used in Google Form)" />
+    <input type="text" id="flatInput" autocomplete="off"
+           placeholder="Enter Flat Number (e.g. K-103, A1-101, O-S2)" />
+
+    <input type="email" id="emailInput" autocomplete="off"
+           placeholder="Enter Email ID (same as used in Google Form)" />
 
     <button onclick="validateAndSearch()">View My Details</button>
 
@@ -196,19 +204,27 @@
     /* ===== FETCH DATA ===== */
     fetch(url)
       .then(res => res.json())
-      .then(data => { allRows = Array.isArray(data) ? data : []; })
+      .then(data => {
+        allRows = Array.isArray(data) ? data : [];
+      })
       .catch(() => {
         const errorMsg = document.getElementById('errorMsg');
         errorMsg.textContent = 'Unable to load data. Please try again later.';
         errorMsg.style.display = 'block';
       });
 
+    /* ===== HELPERS ===== */
+    const normalizeFlat = (val) =>
+      val
+        .toUpperCase()
+        .replace(/\s+/g, '')      // remove spaces
+        .replace(/[–—]/g, '-')    // normalize dash
+        .trim();
+
     /* ===== RENDER CARDS ===== */
     function renderCards(data) {
       const container = document.getElementById("cardContainer");
       container.innerHTML = "";
-
-      if (!data || data.length === 0) return;
 
       data.forEach(row => {
         const card = document.createElement("div");
@@ -237,8 +253,12 @@
 
     /* ===== VALIDATION + SEARCH ===== */
     function validateAndSearch() {
-      const flatVal = document.getElementById("flatInput").value.trim().toUpperCase();
-      const emailVal = document.getElementById("emailInput").value.trim().toLowerCase();
+      const flatVal = normalizeFlat(
+        document.getElementById("flatInput").value
+      );
+      const emailVal = document.getElementById("emailInput").value
+        .trim().toLowerCase();
+
       const errorMsg = document.getElementById("errorMsg");
       const cardContainer = document.getElementById("cardContainer");
 
@@ -252,21 +272,32 @@
         return;
       }
 
-      const flatPattern = /^[A-Z]{1,2}[0-9]?\-\d{3,4}$/;
+      /* VALID FLAT FORMATS:
+         K-103, A1-101, P-1101, O-S2, M-S3
+      */
+      const flatPattern = /^[A-Z]{1,2}[0-9]?-(?:\d{3,4}|[A-Z]\d)$/;
+
       if (!flatPattern.test(flatVal)) {
-        errorMsg.textContent = Enter flat no in proper format (e.g. K-103, A1-101, O-S2);
+        errorMsg.textContent =
+          "Enter flat no in proper format (e.g. K-103, A1-101, O-S2)";
         errorMsg.style.display = "block";
         return;
       }
 
       const filtered = allRows.filter(row => {
-        const flat = (row['Flat Number'] || row['Flat No'] || row['Flat'] || '').toUpperCase();
-        const email = (row['Email Address'] || row['Email'] || '').toLowerCase();
+        const flat = normalizeFlat(
+          row['Flat Number'] || row['Flat No'] || row['Flat'] || ''
+        );
+        const email = (row['Email Address'] || row['Email'] || '')
+          .toLowerCase()
+          .trim();
+
         return flat === flatVal && email === emailVal;
       });
 
       if (filtered.length === 0) {
-        errorMsg.textContent = "❌ No records found. Please ensure Flat Number and Email ID are the same as entered in the Google Form.";
+        errorMsg.textContent =
+          "❌ No records found. Please ensure Flat Number and Email ID are exactly as entered in the Google Form.";
         errorMsg.style.display = "block";
         return;
       }
@@ -277,5 +308,3 @@
 
 </body>
 </html>
-
-
