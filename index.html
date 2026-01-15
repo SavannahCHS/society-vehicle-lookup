@@ -10,13 +10,12 @@
 
     body {
       margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
       background: #f5f7fa;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 20px auto;
       background: #ffffff;
       padding: 20px;
@@ -24,287 +23,229 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    /* ===== HEADER ===== */
-    .header {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .logo {
-      display: block;
-      margin: 0 auto 4px auto;
-      max-height: 45px;
-      max-width: 100%;
-      width: auto;
-      height: auto;
-    }
-
-    @media (max-width: 600px) {
-      .logo {
-        max-height: 32px;
-      }
-    }
+    /* HEADER */
+    .header { text-align: center; margin-bottom: 20px; }
+    .logo { display: block; margin: 0 auto 6px auto; max-height: 48px; }
+    @media (max-width: 600px) { .logo { max-height: 34px; } }
 
     .divider {
-      width: 50px;
-      height: 2px;
-      background: #2c7be5;
-      margin: 4px auto;
-      border-radius: 2px;
+      width: 60px; height: 2px;
+      background: #2c7be5; margin: 6px auto;
     }
 
-    .tagline {
-      font-size: 14px;
-      font-style: italic;
-      color: #666;
-      margin-bottom: 6px;
-    }
+    .tagline { font-size: 14px; font-style: italic; color: #666; }
+    .page-title { font-size: 22px; font-weight: bold; margin-top: 6px; }
 
-    .page-title {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 6px 0 14px 0;
+    h3 { text-align: center; margin-top: 30px; }
+
+    /* SUMMARY */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px; margin-top: 14px;
+    }
+    .summary-card {
+      background: #f9fafc;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 14px;
       text-align: center;
-      color: #222;
     }
 
-    /* ===== FORM ===== */
-    .info {
-      text-align: center;
-      color: #444;
-      margin-bottom: 18px;
-    }
-
+    /* FORMS */
     input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 14px;
+      width: 100%; padding: 10px;
+      font-size: 16px; margin-bottom: 12px;
     }
-
     button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background: #2c7be5;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      width: 100%; padding: 12px;
+      font-size: 16px; background: #2c7be5;
+      color: #fff; border: none;
+      border-radius: 4px; cursor: pointer;
     }
-
     #errorMsg {
-      display: none;
-      color: #b00020;
-      text-align: center;
-      font-weight: bold;
+      display: none; color: #b00020;
+      text-align: center; font-weight: bold;
       margin-top: 10px;
     }
 
-    /* ===== CARDS ===== */
+    /* DATA CARDS */
     #cardContainer {
-      margin-top: 16px;
-      display: grid;
+      margin-top: 18px;
+      display: grid; gap: 16px;
       grid-template-columns: 1fr;
-      gap: 16px;
     }
-
     @media (min-width: 768px) {
-      #cardContainer {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      #cardContainer { grid-template-columns: repeat(2, 1fr); }
     }
-
     .data-card {
       background: #fafafa;
       border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border-radius: 8px; padding: 14px;
     }
-
     .card-field {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px dashed #ddd;
-      gap: 10px;
+      display: flex; justify-content: space-between;
+      padding: 6px 0; border-bottom: 1px dashed #ddd;
     }
+    .card-field:last-child { border-bottom: none; }
 
-    .card-field:last-child {
-      border-bottom: none;
-    }
-
-    .card-label {
-      font-weight: bold;
-      color: #444;
-      flex: 1;
-    }
-
-    .card-value {
-      color: #222;
-      text-align: right;
-      flex: 1;
-      word-break: break-word;
-    }
-
-    .note {
-      margin-top: 18px;
-      font-size: 14px;
-      color: #555;
-      text-align: center;
-    }
+    .admin-box { text-align: center; margin-bottom: 16px; }
   </style>
 </head>
+
 <body>
+<div class="container">
 
-  <div class="container">
-
-    <!-- HEADER -->
-    <div class="header">
-      <img class="logo" src="./savannah-logo.png" alt="Savannah CHS Logo" />
-      <div class="divider"></div>
-      <div class="tagline">A Legacy of Elegant Living</div>
-      <div class="page-title">Vehicle Registration Records</div>
-    </div>
-
-    <!-- INFO -->
-    <div class="info">
-      Please enter your <b>Flat Number</b> and <b>Email ID</b> entered during Google Form submission to view your submitted details.
-    </div>
-
-    <!-- FORM -->
-    <input type="text" id="flatInput" autocomplete="off"
-           placeholder="Enter Flat Number (e.g. K-103, A1-101, O-S2)" />
-
-    <input type="email" id="emailInput" autocomplete="off"
-           placeholder="Enter Email ID (same as used in Google Form)" />
-
-    <button onclick="validateAndSearch()">View My Details</button>
-
-    <p id="errorMsg"></p>
-
-    <!-- CARD OUTPUT -->
-    <div id="cardContainer"></div>
-
-    <div class="note">
-      ℹ️ Data is fetched live from Google Form master sheet. View-only.
-    </div>
-
+  <!-- HEADER -->
+  <div class="header">
+    <img src="./savannah-logo.png" class="logo" alt="Savannah Logo">
+    <div class="divider"></div>
+    <div class="tagline">A Legacy of Elegant Living</div>
+    <div class="page-title">Vehicle Registration Records</div>
   </div>
 
-  <script>
-    /* ===== CONFIG ===== */
-    const SHEET_ID = "1hD0ph0guA7-EEFyN_N2sp4AIoKYNJ1jQDbqr8sfcRtg";
-    const SHEET_NAME = "Form Responses 1";
-    const url = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
+  <!-- SUMMARY -->
+  <h3>Pending Vehicle Registration – Society Wise</h3>
+  <div id="summaryCards" class="summary-grid"></div>
 
-    let allRows = [];
+  <!-- ADMIN -->
+  <h3>Pending Flat Numbers – Admin Only</h3>
+  <div class="admin-box">
+    <input type="password" id="adminKey" placeholder="Enter Society Admin Key" style="max-width:300px">
+    <button onclick="unlockPending()" style="max-width:300px;margin-top:8px">View Pending Flats</button>
+  </div>
+  <div id="pendingSection" style="display:none"></div>
 
-    /* ===== FETCH DATA ===== */
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        allRows = Array.isArray(data) ? data : [];
-      })
-      .catch(() => {
-        const errorMsg = document.getElementById('errorMsg');
-        errorMsg.textContent = 'Unable to load data. Please try again later.';
-        errorMsg.style.display = 'block';
-      });
+  <!-- RESIDENT SEARCH -->
+  <h3>View Your Submitted Details</h3>
+  <input id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)">
+  <input id="emailInput" type="email" autocomplete="off" placeholder="Enter Email ID">
+  <button onclick="validateAndSearch()">View My Details</button>
+  <p id="errorMsg"></p>
+  <div id="cardContainer"></div>
 
-    /* ===== HELPERS ===== */
-    const normalizeFlat = (val) =>
-      val
-        .toUpperCase()
-        .replace(/\s+/g, '')      // remove spaces
-        .replace(/[–—]/g, '-')    // normalize dash
-        .trim();
+</div>
 
-    /* ===== RENDER CARDS ===== */
-    function renderCards(data) {
-      const container = document.getElementById("cardContainer");
-      container.innerHTML = "";
+<script>
+/* GOOGLE SHEET */
+const SHEET_ID = "1hD0ph0guA7-EEFyN_N2sp4AIoKYNJ1jQDbqr8sfcRtg";
+const SHEET_NAME = "Form Responses 1";
+const url = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
 
-      data.forEach(row => {
-        const card = document.createElement("div");
-        card.className = "data-card";
+/* SOCIETY CONFIG */
+const SOCIETY_CONFIG = {
+  "Savannah A1": { buildings: ["A1"], total: 22 },
+  "Savannah 1": { buildings: ["A","B","C","D"], total: 112 },
+  "Savannah 2": { buildings: ["E","F","G","H"], total: 112 },
+  "Savannah 3": { buildings: ["I","J","K"], total: 84 },
+  "Savannah 4": { buildings: ["L","M","N","O"], total: 138 },
+  "Savannah PQ": { buildings: ["P","Q"], total: 110 }
+};
 
-        Object.keys(row).forEach(key => {
-          const field = document.createElement("div");
-          field.className = "card-field";
+/* ADMIN KEYS */
+const ADMIN_KEYS = {
+  "Savannah A1": "LOLE",
+  "Savannah 1": "THAPA",
+  "Savannah 2": "ANUP",
+  "Savannah 3": "RAHUL",
+  "Savannah 4": "TIWARI",
+  "Savannah PQ": "PRADIP"
+};
 
-          const label = document.createElement("div");
-          label.className = "card-label";
-          label.textContent = key;
+let allRows = [];
 
-          const value = document.createElement("div");
-          value.className = "card-value";
-          value.textContent = row[key] ?? "";
+/* HELPERS */
+const normalizeFlat = v => v.toUpperCase().replace(/\s+/g,'').replace(/[–—]/g,'-');
+const getBuilding = f => f.startsWith("A1") ? "A1" : f.charAt(0);
+const getSociety = b => Object.keys(SOCIETY_CONFIG).find(s => SOCIETY_CONFIG[s].buildings.includes(b));
 
-          field.appendChild(label);
-          field.appendChild(value);
-          card.appendChild(field);
-        });
+/* SUMMARY */
+function computeSocietySummary(rows){
+  const summary={}, seen={};
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]={received:0}; seen[s]=new Set();});
+  rows.forEach(r=>{
+    const f = normalizeFlat(r['Flat Number']||r['Flat']||'');
+    if(!f) return;
+    const soc = getSociety(getBuilding(f));
+    if(soc && !seen[soc].has(f)){ seen[soc].add(f); summary[soc].received++; }
+  });
+  return summary;
+}
 
-        container.appendChild(card);
-      });
-    }
+function renderSummary(summary){
+  const c=document.getElementById("summaryCards"); c.innerHTML="";
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{
+    const t=SOCIETY_CONFIG[s].total;
+    const r=summary[s]?.received||0;
+    c.innerHTML+=`<div class="summary-card"><b>${s}</b><br>Total: ${t}<br>Received: ${r}<br><span style="color:#b00020">Pending: ${t-r}</span></div>`;
+  });
+}
 
-    /* ===== VALIDATION + SEARCH ===== */
-    function validateAndSearch() {
-      const flatVal = normalizeFlat(
-        document.getElementById("flatInput").value
-      );
-      const emailVal = document.getElementById("emailInput").value
-        .trim().toLowerCase();
+/* FLAT GENERATION */
+function generateFlats(b){
+  const f=[];
+  if(b==="A1"){ for(let i=1;i<=11;i++) f.push(`A1-${i}01`,`A1-${i}02`); return f; }
+  if(["L","M","N","O"].includes(b)){
+    const s=b==="L"?2:4, max=b==="L"?42:32;
+    for(let i=1;i<=s;i++) f.push(`${b}-S${i}`);
+    for(let fl=1;f.length<max;fl++) f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
+    return f;
+  }
+  if(b==="P"||b==="Q"){
+    const per=b==="P"?4:6;
+    for(let fl=1;fl<=11;fl++) for(let i=1;i<=per;i++) f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
+    return f;
+  }
+  for(let fl=1;f.length<28;fl++) f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
+  return f;
+}
 
-      const errorMsg = document.getElementById("errorMsg");
-      const cardContainer = document.getElementById("cardContainer");
+function computePendingFlats(rows){
+  const submitted=new Set(rows.map(r=>normalizeFlat(r['Flat Number']||r['Flat']||'')));
+  const pending={};
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{
+    pending[s]={};
+    SOCIETY_CONFIG[s].buildings.forEach(b=>{
+      pending[s][b]=generateFlats(b).filter(f=>!submitted.has(normalizeFlat(f)));
+    });
+  });
+  return pending;
+}
 
-      errorMsg.style.display = "none";
-      errorMsg.textContent = "";
-      cardContainer.innerHTML = "";
+/* ADMIN VIEW */
+function unlockPending(){
+  const key=document.getElementById("adminKey").value.trim();
+  const soc=Object.keys(ADMIN_KEYS).find(s=>ADMIN_KEYS[s]===key);
+  if(!soc){ alert("Invalid admin key"); return; }
+  const c=document.getElementById("pendingSection");
+  c.style.display="block"; c.innerHTML="";
+  Object.keys(window.__pendingData[soc]).forEach(b=>{
+    const list=window.__pendingData[soc][b];
+    if(list.length>0)
+      c.innerHTML+=`<div class="data-card"><b>${soc} – Building ${b}</b><br><span style="color:#b00020">Pending (${list.length})</span><div>${list.join(", ")}</div></div>`;
+  });
+}
 
-      if (!flatVal || !emailVal) {
-        errorMsg.textContent = "Please enter both Flat Number and Email ID.";
-        errorMsg.style.display = "block";
-        return;
-      }
+/* RESIDENT SEARCH */
+function validateAndSearch(){
+  const flat=normalizeFlat(flatInput.value);
+  const email=emailInput.value.toLowerCase().trim();
+  cardContainer.innerHTML=""; errorMsg.style.display="none";
+  if(!flat||!email){ errorMsg.textContent="Please enter both Flat Number and Email ID."; errorMsg.style.display="block"; return; }
+  const rows=allRows.filter(r=>normalizeFlat(r['Flat Number']||r['Flat']||'')===flat && (r['Email']||r['Email Address']||'').toLowerCase()===email);
+  if(rows.length===0){ errorMsg.textContent="No matching record found."; errorMsg.style.display="block"; return; }
+  rows.forEach(r=>{
+    let html=""; Object.keys(r).forEach(k=>html+=`<div class='card-field'><span>${k}</span><span>${r[k]}</span></div>`);
+    cardContainer.innerHTML+=`<div class='data-card'>${html}</div>`;
+  });
+}
 
-      /* VALID FLAT FORMATS:
-         K-103, A1-101, P-1101, O-S2, M-S3
-      */
-      const flatPattern = /^[A-Z]{1,2}[0-9]?-(?:\d{3,4}|[A-Z]\d)$/;
-
-      if (!flatPattern.test(flatVal)) {
-        errorMsg.textContent =
-          "Enter flat no in proper format (e.g. K-103, A1-101, O-S2)";
-        errorMsg.style.display = "block";
-        return;
-      }
-
-      const filtered = allRows.filter(row => {
-        const flat = normalizeFlat(
-          row['Flat Number'] || row['Flat No'] || row['Flat'] || ''
-        );
-        const email = (row['Email Address'] || row['Email'] || '')
-          .toLowerCase()
-          .trim();
-
-        return flat === flatVal && email === emailVal;
-      });
-
-      if (filtered.length === 0) {
-        errorMsg.textContent =
-          "❌ No records found. Please ensure Flat Number and Email ID are exactly as entered in the Google Form.";
-        errorMsg.style.display = "block";
-        return;
-      }
-
-      renderCards(filtered);
-    }
-  </script>
-
+/* INIT */
+fetch(url).then(r=>r.json()).then(data=>{
+  allRows=data;
+  renderSummary(computeSocietySummary(allRows));
+  window.__pendingData=computePendingFlats(allRows);
+});
+</script>
 </body>
 </html>
