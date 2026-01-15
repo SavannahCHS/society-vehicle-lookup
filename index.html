@@ -23,80 +23,91 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    /* HEADER */
     .header { text-align: center; margin-bottom: 20px; }
-    .logo { display: block; margin: 0 auto 6px auto; max-height: 48px; }
-    @media (max-width: 600px) { .logo { max-height: 34px; } }
+    .logo { display:block; margin:0 auto 6px; max-height:48px; }
+    @media (max-width:600px){ .logo{max-height:34px;} }
 
-    .divider {
-      width: 60px; height: 2px;
-      background: #2c7be5; margin: 6px auto;
-    }
+    .divider { width:60px; height:2px; background:#2c7be5; margin:6px auto; }
+    .tagline { font-size:14px; font-style:italic; color:#666; }
+    .page-title { font-size:22px; font-weight:bold; margin-top:6px; }
 
-    .tagline { font-size: 14px; font-style: italic; color: #666; }
-    .page-title { font-size: 22px; font-weight: bold; margin-top: 6px; }
+    h3 { text-align:center; margin-top:30px; }
 
-    h3 { text-align: center; margin-top: 30px; }
-
-    /* SUMMARY */
     .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px; margin-top: 14px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+      margin-top:14px;
     }
+
     .summary-card {
-      background: #f9fafc;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 14px;
-      text-align: center;
+      background:#f9fafc;
+      border:1px solid #ddd;
+      border-radius:8px;
+      padding:14px;
+      text-align:center;
     }
 
-    /* FORMS */
     input {
-      width: 100%; padding: 10px;
-      font-size: 16px; margin-bottom: 12px;
+      width:100%;
+      padding:10px;
+      font-size:16px;
+      margin-bottom:12px;
     }
+
     button {
-      width: 100%; padding: 12px;
-      font-size: 16px; background: #2c7be5;
-      color: #fff; border: none;
-      border-radius: 4px; cursor: pointer;
+      width:100%;
+      padding:12px;
+      font-size:16px;
+      background:#2c7be5;
+      color:#fff;
+      border:none;
+      border-radius:4px;
+      cursor:pointer;
     }
+
     #errorMsg {
-      display: none; color: #b00020;
-      text-align: center; font-weight: bold;
-      margin-top: 10px;
+      display:none;
+      color:#b00020;
+      text-align:center;
+      font-weight:bold;
+      margin-top:10px;
     }
 
-    /* DATA CARDS */
     #cardContainer {
-      margin-top: 18px;
-      display: grid; gap: 16px;
-      grid-template-columns: 1fr;
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
     }
-    @media (min-width: 768px) {
-      #cardContainer { grid-template-columns: repeat(2, 1fr); }
-    }
-    .data-card {
-      background: #fafafa;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px; padding: 14px;
-    }
-    .card-field {
-      display: flex; justify-content: space-between;
-      padding: 6px 0; border-bottom: 1px dashed #ddd;
-    }
-    .card-field:last-child { border-bottom: none; }
 
-    .admin-box { text-align: center; margin-bottom: 16px; }
+    @media (min-width:768px){
+      #cardContainer{grid-template-columns:repeat(2,1fr);}
+    }
+
+    .data-card {
+      background:#fafafa;
+      border:1px solid #e0e0e0;
+      border-radius:8px;
+      padding:14px;
+    }
+
+    .card-field {
+      display:flex;
+      justify-content:space-between;
+      padding:6px 0;
+      border-bottom:1px dashed #ddd;
+    }
+
+    .card-field:last-child{border-bottom:none;}
+
+    .admin-box { text-align:center; margin-bottom:16px; }
   </style>
 </head>
 
 <body>
 <div class="container">
 
-  <!-- HEADER -->
   <div class="header">
     <img src="./savannah-logo.png" class="logo" alt="Savannah Logo">
     <div class="divider"></div>
@@ -104,11 +115,9 @@
     <div class="page-title">Vehicle Registration Records</div>
   </div>
 
-  <!-- SUMMARY -->
   <h3>Pending Vehicle Registration – Society Wise</h3>
   <div id="summaryCards" class="summary-grid"></div>
 
-  <!-- ADMIN -->
   <h3>Pending Flat Numbers – Admin Only</h3>
   <div class="admin-box">
     <input type="password" id="adminKey" placeholder="Enter Society Admin Key" style="max-width:300px">
@@ -116,7 +125,6 @@
   </div>
   <div id="pendingSection" style="display:none"></div>
 
-  <!-- RESIDENT SEARCH -->
   <h3>View Your Submitted Details</h3>
   <input id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)">
   <input id="emailInput" type="email" autocomplete="off" placeholder="Enter Email ID">
@@ -134,54 +142,32 @@ const url = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAM
 
 /* SOCIETY CONFIG */
 const SOCIETY_CONFIG = {
-  "Savannah A1": { buildings: ["A1"], total: 22 },
-  "Savannah 1": { buildings: ["A","B","C","D"], total: 112 },
-  "Savannah 2": { buildings: ["E","F","G","H"], total: 112 },
-  "Savannah 3": { buildings: ["I","J","K"], total: 84 },
-  "Savannah 4": { buildings: ["L","M","N","O"], total: 138 },
-  "Savannah PQ": { buildings: ["P","Q"], total: 110 }
+  "Savannah A1": { buildings:["A1"], total:22 },
+  "Savannah 1": { buildings:["A","B","C","D"], total:112 },
+  "Savannah 2": { buildings:["E","F","G","H"], total:112 },
+  "Savannah 3": { buildings:["I","J","K"], total:84 },
+  "Savannah 4": { buildings:["L","M","N","O"], total:138 },
+  "Savannah PQ": { buildings:["P","Q"], total:110 }
 };
 
 /* ADMIN KEYS */
 const ADMIN_KEYS = {
-  "Savannah A1": "LOLE",
-  "Savannah 1": "THAPA",
-  "Savannah 2": "ANUP",
-  "Savannah 3": "RAHUL",
-  "Savannah 4": "TIWARI",
-  "Savannah PQ": "PRADIP"
+  "Savannah A1":"LOLE",
+  "Savannah 1":"THAPA",
+  "Savannah 2":"ANUP",
+  "Savannah 3":"RAHUL",
+  "Savannah 4":"TIWARI",
+  "Savannah PQ":"PRADIP"
 };
 
-let allRows = [];
+let allRows=[];
 
 /* HELPERS */
 const normalizeFlat = v => v.toUpperCase().replace(/\s+/g,'').replace(/[–—]/g,'-');
 const getBuilding = f => f.startsWith("A1") ? "A1" : f.charAt(0);
 const getSociety = b => Object.keys(SOCIETY_CONFIG).find(s => SOCIETY_CONFIG[s].buildings.includes(b));
 
-/* SUMMARY */
-function computeSocietySummary(rows){
-  const summary={}, seen={};
-  Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]={received:0}; seen[s]=new Set();});
-  rows.forEach(r=>{
-    const f = normalizeFlat(r['Flat Number']||r['Flat']||'');
-    if(!f) return;
-    const soc = getSociety(getBuilding(f));
-    if(soc && !seen[soc].has(f)){ seen[soc].add(f); summary[soc].received++; }
-  });
-  return summary;
-}
-
-function renderSummary(summary){
-  const c=document.getElementById("summaryCards"); c.innerHTML="";
-  Object.keys(SOCIETY_CONFIG).forEach(s=>{
-    const t=SOCIETY_CONFIG[s].total;
-    const r=summary[s]?.received||0;
-    c.innerHTML+=`<div class="summary-card"><b>${s}</b><br>Total: ${t}<br>Received: ${r}<br><span style="color:#b00020">Pending: ${t-r}</span></div>`;
-  });
-}
-
-/* FLAT GENERATION */
+/* MASTER FLAT LIST (AUTHORITATIVE) */
 function generateFlats(b){
   const f=[];
   if(b==="A1"){ for(let i=1;i<=11;i++) f.push(`A1-${i}01`,`A1-${i}02`); return f; }
@@ -193,17 +179,58 @@ function generateFlats(b){
   }
   if(b==="P"||b==="Q"){
     const per=b==="P"?4:6;
-    for(let fl=1;fl<=11;fl++) for(let i=1;i<=per;i++) f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
+    for(let fl=1;fl<=11;fl++) for(let i=1;i<=per;i++)
+      f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
     return f;
   }
   for(let fl=1;f.length<28;fl++) f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
   return f;
 }
 
+function buildSocietyMaster(){
+  const master={};
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{
+    master[s]=[];
+    SOCIETY_CONFIG[s].buildings.forEach(b=>{
+      generateFlats(b).forEach(f=>master[s].push(normalizeFlat(f)));
+    });
+  });
+  return master;
+}
+
+/* SUMMARY – FIXED (USES MASTER LIST) */
+function computeSocietySummary(rows){
+  const summary={}, seen={}, master=buildSocietyMaster();
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]={received:0}; seen[s]=new Set();});
+
+  rows.forEach(r=>{
+    const flat=normalizeFlat(r['Flat Number']||r['Flat']||'');
+    if(!flat) return;
+    const soc=getSociety(getBuilding(flat));
+    if(soc && master[soc].includes(flat) && !seen[soc].has(flat)){
+      seen[soc].add(flat);
+      summary[soc].received++;
+    }
+  });
+  return summary;
+}
+
+function renderSummary(summary){
+  const c=document.getElementById("summaryCards"); c.innerHTML="";
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{
+    const t=SOCIETY_CONFIG[s].total;
+    const r=summary[s].received;
+    c.innerHTML+=`<div class="summary-card"><b>${s}</b><br>Total: ${t}<br>Received: ${r}<br><span style="color:#b00020">Pending: ${t-r}</span></div>`;
+  });
+}
+
+/* PENDING FLATS */
 function computePendingFlats(rows){
+  const master=buildSocietyMaster();
   const submitted=new Set(rows.map(r=>normalizeFlat(r['Flat Number']||r['Flat']||'')));
   const pending={};
-  Object.keys(SOCIETY_CONFIG).forEach(s=>{
+
+  Object.keys(master).forEach(s=>{
     pending[s]={};
     SOCIETY_CONFIG[s].buildings.forEach(b=>{
       pending[s][b]=generateFlats(b).filter(f=>!submitted.has(normalizeFlat(f)));
@@ -214,11 +241,13 @@ function computePendingFlats(rows){
 
 /* ADMIN VIEW */
 function unlockPending(){
-  const key=document.getElementById("adminKey").value.trim();
+  const key=adminKey.value.trim();
   const soc=Object.keys(ADMIN_KEYS).find(s=>ADMIN_KEYS[s]===key);
   if(!soc){ alert("Invalid admin key"); return; }
+
   const c=document.getElementById("pendingSection");
   c.style.display="block"; c.innerHTML="";
+
   Object.keys(window.__pendingData[soc]).forEach(b=>{
     const list=window.__pendingData[soc][b];
     if(list.length>0)
@@ -231,12 +260,26 @@ function validateAndSearch(){
   const flat=normalizeFlat(flatInput.value);
   const email=emailInput.value.toLowerCase().trim();
   cardContainer.innerHTML=""; errorMsg.style.display="none";
-  if(!flat||!email){ errorMsg.textContent="Please enter both Flat Number and Email ID."; errorMsg.style.display="block"; return; }
-  const rows=allRows.filter(r=>normalizeFlat(r['Flat Number']||r['Flat']||'')===flat && (r['Email']||r['Email Address']||'').toLowerCase()===email);
-  if(rows.length===0){ errorMsg.textContent="No matching record found."; errorMsg.style.display="block"; return; }
+
+  if(!flat||!email){
+    errorMsg.textContent="Please enter both Flat Number and Email ID.";
+    errorMsg.style.display="block"; return;
+  }
+
+  const rows=allRows.filter(r =>
+    normalizeFlat(r['Flat Number']||r['Flat']||'')===flat &&
+    (r['Email']||r['Email Address']||'').toLowerCase()===email
+  );
+
+  if(rows.length===0){
+    errorMsg.textContent="No matching record found.";
+    errorMsg.style.display="block"; return;
+  }
+
   rows.forEach(r=>{
-    let html=""; Object.keys(r).forEach(k=>html+=`<div class='card-field'><span>${k}</span><span>${r[k]}</span></div>`);
-    cardContainer.innerHTML+=`<div class='data-card'>${html}</div>`;
+    let html="";
+    Object.keys(r).forEach(k=>html+=`<div class="card-field"><span>${k}</span><span>${r[k]}</span></div>`);
+    cardContainer.innerHTML+=`<div class="data-card">${html}</div>`;
   });
 }
 
