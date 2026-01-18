@@ -7,30 +7,138 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa}
-.container{max-width:1100px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.header{text-align:center}
-.logo{max-height:48px}
-@media(max-width:600px){.logo{max-height:34px}}
-.divider{width:60px;height:2px;background:#2c7be5;margin:6px auto}
-.tagline{font-style:italic;color:#666}
-.page-title{font-size:22px;font-weight:bold}
-h3{text-align:center;margin-top:30px}
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:linear-gradient(180deg,#eef2ff,#f8fafc);
+  color:#0f172a;
+}
+.container{
+  max-width:1150px;
+  margin:30px auto;
+  background:#ffffff;
+  padding:24px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
 
-.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
-.summary-card,.data-card{background:#f9fafc;border:1px solid #ddd;border-radius:8px;padding:14px;text-align:center}
+/* HEADER */
+.header{
+  text-align:center;
+  padding:16px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#e0e7ff,#f8fafc);
+}
+.logo{max-height:50px}
+@media(max-width:600px){.logo{max-height:36px}}
+.divider{width:70px;height:3px;background:#2c7be5;margin:8px auto}
+.tagline{font-style:italic;color:#475569}
+.page-title{font-size:24px;font-weight:700;margin-top:6px}
 
-input,button{width:100%;padding:10px;font-size:16px;margin-bottom:10px}
-button{background:#2c7be5;color:#fff;border:none;border-radius:4px;cursor:pointer}
+/* TITLES */
+h3{
+  text-align:center;
+  margin:40px 0 10px;
+  font-size:20px;
+  color:#1e3a8a;
+}
 
-.admin-box{text-align:center;margin-top:15px}
-.admin-tabs{display:flex;justify-content:center;gap:10px;margin-top:20px}
-.admin-tabs button{width:auto;padding:8px 16px}
+/* SUMMARY */
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px;
+  margin-top:18px;
+}
+.summary-card,.data-card{
+  background:linear-gradient(180deg,#ffffff,#f9fafc);
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  transition:.2s;
+}
+.summary-card:hover,.data-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+}
+.pending-high{color:#b91c1c;font-weight:700}
+.pending-low{color:#166534;font-weight:700}
+
+/* INPUTS */
+input,button{
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  margin-bottom:12px;
+  border-radius:8px;
+}
+input{border:1px solid #c7d2fe}
+button{
+  background:linear-gradient(135deg,#2563eb,#2c7be5);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+
+/* ADMIN */
+.admin-box{text-align:center;margin-top:16px}
+.admin-tabs{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:24px 0;
+}
+.admin-tabs button{
+  width:auto;
+  padding:8px 20px;
+  background:#e5e7eb;
+  color:#1e293b;
+  border-radius:999px;
+}
+.admin-tabs button.active{
+  background:#2c7be5;
+  color:#fff;
+}
 .hidden{display:none}
 
-.card-field{display:flex;justify-content:space-between;border-bottom:1px dashed #ddd;padding:6px 0}
+/* VEHICLE CARD */
+.vehicle-card{
+  background:linear-gradient(135deg,#eef2ff,#ffffff);
+  border-left:6px solid #2c7be5;
+  text-align:left;
+}
+.vehicle-card b{color:#1e3a8a}
+
+/* BADGES */
+.flat-badge{
+  display:inline-block;
+  background:#fee2e2;
+  color:#991b1b;
+  padding:5px 10px;
+  border-radius:999px;
+  margin:4px;
+  font-size:13px;
+}
+
+/* RESIDENT DETAILS */
+.card-field{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px dashed #e5e7eb;
+}
 .card-field:last-child{border-bottom:none}
-#errorMsg{display:none;color:#b00020;text-align:center;font-weight:bold}
+.card-field span:first-child{color:#64748b}
+.card-field span:last-child{font-weight:600}
+
+#errorMsg{
+  display:none;
+  color:#b00020;
+  text-align:center;
+  font-weight:bold;
+}
 </style>
 </head>
 
@@ -38,10 +146,10 @@ button{background:#2c7be5;color:#fff;border:none;border-radius:4px;cursor:pointe
 <div class="container">
 
 <div class="header">
-<img src="savannah-logo.png" class="logo">
-<div class="divider"></div>
-<div class="tagline">A Legacy of Elegant Living</div>
-<div class="page-title">Vehicle Registration Records</div>
+  <img src="savannah-logo.png" class="logo">
+  <div class="divider"></div>
+  <div class="tagline">A Legacy of Elegant Living</div>
+  <div class="page-title">Vehicle Registration Records</div>
 </div>
 
 <h3>Pending Vehicle Registration – Society Wise</h3>
@@ -49,25 +157,23 @@ button{background:#2c7be5;color:#fff;border:none;border-radius:4px;cursor:pointe
 
 <h3>Admin Tools</h3>
 <div class="admin-box">
-<input type="password" id="adminKey" placeholder="Enter Society Admin Key" style="max-width:300px">
-<button onclick="unlockAdmin()" style="max-width:300px">Unlock Admin</button>
+  <input type="password" id="adminKey" placeholder="Enter Society Admin Key" style="max-width:320px">
+  <button onclick="unlockAdmin()" style="max-width:320px">Unlock Admin</button>
 </div>
 
 <div id="adminArea" class="hidden">
+  <div class="admin-tabs">
+    <button onclick="showPending(this)">Pending Flats</button>
+    <button onclick="showVehicleLookup(this)">Vehicle Lookup</button>
+  </div>
 
-<div class="admin-tabs">
-<button onclick="showPending()">Pending Flats</button>
-<button onclick="showVehicleLookup()">Vehicle Lookup</button>
-</div>
+  <div id="pendingSection" class="hidden"></div>
 
-<div id="pendingSection" class="hidden"></div>
-
-<div id="vehicleSection" class="hidden">
-<input id="vehicleInput" placeholder="Enter Vehicle Number (e.g. MH12AB1234)" style="max-width:300px;margin:auto">
-<button onclick="searchVehicle()" style="max-width:300px;margin:auto">Search Vehicle</button>
-<div id="vehicleResult" class="summary-grid"></div>
-</div>
-
+  <div id="vehicleSection" class="hidden">
+    <input id="vehicleInput" placeholder="Enter Vehicle Number (e.g. MH12AB1234)" style="max-width:320px;margin:auto">
+    <button onclick="searchVehicle()" style="max-width:320px;margin:auto">Search Vehicle</button>
+    <div id="vehicleResult" class="summary-grid"></div>
+  </div>
 </div>
 
 <h3>View Your Submitted Details</h3>
@@ -80,6 +186,7 @@ button{background:#2c7be5;color:#fff;border:none;border-radius:4px;cursor:pointe
 </div>
 
 <script>
+/* GOOGLE SHEET */
 const SHEET_ID="1hD0ph0guA7-EEFyN_N2sp4AIoKYNJ1jQDbqr8sfcRtg";
 const SHEET_NAME="Form Responses 1";
 const url=`https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
@@ -99,99 +206,143 @@ const ADMIN_KEYS={
 };
 
 let allRows=[], unlockedSociety=null;
-
 const normalize=v=>v.toUpperCase().replace(/\s+/g,'').replace(/[–—]/g,'-');
 
 function unlockAdmin(){
-const key=adminKey.value.trim();
-unlockedSociety=Object.keys(ADMIN_KEYS).find(s=>ADMIN_KEYS[s]===key);
-if(!unlockedSociety){alert("Invalid admin key");return;}
-adminArea.classList.remove("hidden");
+  const key=adminKey.value.trim();
+  unlockedSociety=Object.keys(ADMIN_KEYS).find(s=>ADMIN_KEYS[s]===key);
+  if(!unlockedSociety){alert("Invalid admin key");return;}
+  adminArea.classList.remove("hidden");
 }
 
-function showPending(){
-pendingSection.classList.remove("hidden");
-vehicleSection.classList.add("hidden");
-renderPending();
+function activateTab(btn){
+  document.querySelectorAll(".admin-tabs button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
 }
 
-function showVehicleLookup(){
-vehicleSection.classList.remove("hidden");
-pendingSection.classList.add("hidden");
+function showPending(btn){
+  activateTab(btn);
+  pendingSection.classList.remove("hidden");
+  vehicleSection.classList.add("hidden");
+  renderPending();
 }
 
+function showVehicleLookup(btn){
+  activateTab(btn);
+  vehicleSection.classList.remove("hidden");
+  pendingSection.classList.add("hidden");
+}
+
+/* MASTER FLAT GENERATOR */
 function generateFlats(b){
-const f=[];
-if(b==="A1"){for(let i=1;i<=11;i++)f.push(`A1-${i}01`,`A1-${i}02`);return f;}
-if(["L","M","N","O"].includes(b)){
-const s=b==="L"?2:4,max=b==="L"?42:32;
-for(let i=1;i<=s;i++)f.push(`${b}-S${i}`);
-for(let fl=1;f.length<max;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
-return f;}
-if(b==="P"||b==="Q"){
-const per=b==="P"?4:6;
-for(let fl=1;fl<=11;fl++)for(let i=1;i<=per;i++)f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
-return f;}
-for(let fl=1;f.length<28;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
-return f;
+  const f=[];
+  if(b==="A1"){for(let i=1;i<=11;i++)f.push(`A1-${i}01`,`A1-${i}02`);return f;}
+  if(["L","M","N","O"].includes(b)){
+    const s=b==="L"?2:4,max=b==="L"?42:32;
+    for(let i=1;i<=s;i++)f.push(`${b}-S${i}`);
+    for(let fl=1;f.length<max;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
+    return f;
+  }
+  if(b==="P"||b==="Q"){
+    const per=b==="P"?4:6;
+    for(let fl=1;fl<=11;fl++)for(let i=1;i<=per;i++)
+      f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
+    return f;
+  }
+  for(let fl=1;f.length<28;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
+  return f;
 }
 
+/* PENDING */
 function renderPending(){
-pendingSection.innerHTML="";
-const submitted=new Set(allRows.map(r=>normalize(r["Flat Number"]||"")));
-SOCIETY_CONFIG[unlockedSociety].buildings.forEach(b=>{
-const p=generateFlats(b).filter(f=>!submitted.has(normalize(f)));
-if(p.length)pendingSection.innerHTML+=`<div class="data-card"><b>${b}</b><br>Pending (${p.length})<br>${p.join(", ")}</div>`;
-});
+  pendingSection.innerHTML="";
+  const submitted=new Set(allRows.map(r=>normalize(r["Flat Number"]||"")));
+  SOCIETY_CONFIG[unlockedSociety].buildings.forEach(b=>{
+    const p=generateFlats(b).filter(f=>!submitted.has(normalize(f)));
+    if(p.length){
+      pendingSection.innerHTML+=`
+      <div class="data-card">
+        <b>${b}</b><br>Pending (${p.length})<br>
+        ${p.map(f=>`<span class="flat-badge">${f}</span>`).join("")}
+      </div>`;
+    }
+  });
 }
 
+/* VEHICLE SEARCH */
 function searchVehicle(){
-const v=vehicleInput.value.toUpperCase().replace(/\s+/g,"");
-vehicleResult.innerHTML="";
-const m=allRows.filter(r=>
-(r["Vehicle Number"]||"").toUpperCase().replace(/\s+/g,"")===v
-);
-if(!m.length){vehicleResult.innerHTML="<div class='summary-card'>No record found</div>";return;}
-m.forEach(r=>{
-vehicleResult.innerHTML+=`
-<div class="summary-card">
-<b>Vehicle:</b> ${r["Vehicle Number"]||""}<br>
-<b>Name:</b> ${r["Resident Name"]||r["Name"]||""}<br>
-<b>Flat:</b> ${r["Flat Number"]||""}<br>
-<b>Contact:</b> ${r["Contact Number"]||r["Mobile Number"]||r["Mobile"]||r["Phone Number"]||""}
-</div>`;
-});
+  const v=vehicleInput.value.toUpperCase().replace(/\s+/g,"");
+  vehicleResult.innerHTML="";
+  const m=allRows.filter(r=>
+    (r["Vehicle Number"]||"").toUpperCase().replace(/\s+/g,"")===v
+  );
+  if(!m.length){
+    vehicleResult.innerHTML="<div class='summary-card'>No record found</div>";
+    return;
+  }
+  m.forEach(r=>{
+    vehicleResult.innerHTML+=`
+    <div class="summary-card vehicle-card">
+      <b>Vehicle:</b> ${r["Vehicle Number"]||""}<br>
+      <b>Name:</b> ${r["Resident Name"]||r["Name"]||""}<br>
+      <b>Flat:</b> ${r["Flat Number"]||""}<br>
+      <b>Contact:</b> ${r["Contact Number"]||r["Mobile Number"]||r["Mobile"]||r["Phone Number"]||""}
+    </div>`;
+  });
 }
 
+/* RESIDENT LOOKUP */
 function validateAndSearch(){
-const flat=normalize(flatInput.value);
-const email=emailInput.value.toLowerCase().trim();
-cardContainer.innerHTML="";errorMsg.style.display="none";
-if(!flat||!email){errorMsg.textContent="Please enter both Flat Number and Email ID.";errorMsg.style.display="block";return;}
-const rows=allRows.filter(r=>
-normalize(r["Flat Number"]||"")===flat &&
-(r["Email"]||"").toLowerCase()===email
-);
-if(!rows.length){errorMsg.textContent="No matching record found.";errorMsg.style.display="block";return;}
-rows.forEach(r=>{
-let h="";Object.keys(r).forEach(k=>h+=`<div class="card-field"><span>${k}</span><span>${r[k]}</span></div>`);
-cardContainer.innerHTML+=`<div class="data-card">${h}</div>`;
-});
+  const flat=normalize(flatInput.value);
+  const email=emailInput.value.toLowerCase().trim();
+  cardContainer.innerHTML=""; errorMsg.style.display="none";
+
+  if(!flat||!email){
+    errorMsg.textContent="Please enter both Flat Number and Email ID.";
+    errorMsg.style.display="block"; return;
+  }
+
+  const rows=allRows.filter(r=>
+    normalize(r["Flat Number"]||"")===flat &&
+    (r["Email"]||"").toLowerCase()===email
+  );
+
+  if(!rows.length){
+    errorMsg.textContent="No matching record found.";
+    errorMsg.style.display="block"; return;
+  }
+
+  rows.forEach(r=>{
+    let h="";
+    Object.keys(r).forEach(k=>{
+      h+=`<div class="card-field"><span>${k}</span><span>${r[k]}</span></div>`;
+    });
+    cardContainer.innerHTML+=`<div class="data-card">${h}</div>`;
+  });
 }
 
+/* INIT */
 fetch(url).then(r=>r.json()).then(d=>{
-allRows=d;
-const summary={},seen={};
-Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]=0;seen[s]=new Set();});
-d.forEach(r=>{
-const f=normalize(r["Flat Number"]||"");
-const b=f.startsWith("A1")?"A1":f.charAt(0);
-const s=Object.keys(SOCIETY_CONFIG).find(x=>SOCIETY_CONFIG[x].buildings.includes(b));
-if(s&&!seen[s].has(f)){seen[s].add(f);summary[s]++;}
-});
-Object.keys(SOCIETY_CONFIG).forEach(s=>{
-summaryCards.innerHTML+=`<div class="summary-card"><b>${s}</b><br>Total: ${SOCIETY_CONFIG[s].total}<br>Received: ${summary[s]}<br><span style="color:#b00020">Pending: ${SOCIETY_CONFIG[s].total-summary[s]}</span></div>`;
-});
+  allRows=d;
+  const summary={},seen={};
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]=0;seen[s]=new Set();});
+  d.forEach(r=>{
+    const f=normalize(r["Flat Number"]||"");
+    const b=f.startsWith("A1")?"A1":f.charAt(0);
+    const s=Object.keys(SOCIETY_CONFIG).find(x=>SOCIETY_CONFIG[x].buildings.includes(b));
+    if(s&&!seen[s].has(f)){seen[s].add(f);summary[s]++;}
+  });
+  Object.keys(SOCIETY_CONFIG).forEach(s=>{
+    const pending=SOCIETY_CONFIG[s].total-summary[s];
+    const cls=pending>20?"pending-high":"pending-low";
+    summaryCards.innerHTML+=`
+    <div class="summary-card">
+      <b>${s}</b><br>
+      Total: ${SOCIETY_CONFIG[s].total}<br>
+      Received: ${summary[s]}<br>
+      <span class="${cls}">Pending: ${pending}</span>
+    </div>`;
+  });
 });
 </script>
 </body>
