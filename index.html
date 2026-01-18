@@ -1,138 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Savannah CHS – Vehicle Registration Records</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savannah CHS – Vehicle Registration Records</title>
 
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, sans-serif; background: #f5f7fa; }
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa}
+.container{max-width:1100px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.header{text-align:center}
+.logo{max-height:48px}
+@media(max-width:600px){.logo{max-height:34px}}
+.divider{width:60px;height:2px;background:#2c7be5;margin:6px auto}
+.tagline{font-style:italic;color:#666}
+.page-title{font-size:22px;font-weight:bold}
+h3{text-align:center;margin-top:30px}
 
-    .container {
-      max-width: 1100px;
-      margin: 20px auto;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
+.summary-card,.data-card{background:#f9fafc;border:1px solid #ddd;border-radius:8px;padding:14px;text-align:center}
 
-    .header { text-align: center; margin-bottom: 20px; }
-    .logo { display:block; margin:0 auto 6px; max-height:48px; }
-    @media (max-width:600px){ .logo{max-height:34px;} }
+input,button{width:100%;padding:10px;font-size:16px;margin-bottom:10px}
+button{background:#2c7be5;color:#fff;border:none;border-radius:4px;cursor:pointer}
 
-    .divider { width:60px; height:2px; background:#2c7be5; margin:6px auto; }
-    .tagline { font-size:14px; font-style:italic; color:#666; }
-    .page-title { font-size:22px; font-weight:bold; margin-top:6px; }
+.admin-box{text-align:center;margin-top:15px}
+.admin-tabs{display:flex;justify-content:center;gap:10px;margin-top:20px}
+.admin-tabs button{width:auto;padding:8px 16px}
+.hidden{display:none}
 
-    h3 { text-align:center; margin-top:30px; }
-
-    .summary-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:14px;
-      margin-top:14px;
-    }
-
-    .summary-card, .data-card {
-      background:#f9fafc;
-      border:1px solid #ddd;
-      border-radius:8px;
-      padding:14px;
-      text-align:center;
-    }
-
-    input {
-      width:100%;
-      padding:10px;
-      font-size:16px;
-      margin-bottom:12px;
-    }
-
-    button {
-      width:100%;
-      padding:12px;
-      font-size:16px;
-      background:#2c7be5;
-      color:#fff;
-      border:none;
-      border-radius:4px;
-      cursor:pointer;
-    }
-
-    #errorMsg {
-      display:none;
-      color:#b00020;
-      text-align:center;
-      font-weight:bold;
-      margin-top:10px;
-    }
-
-    #cardContainer {
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:16px;
-    }
-
-    @media (min-width:768px){
-      #cardContainer{grid-template-columns:repeat(2,1fr);}
-    }
-
-    .card-field {
-      display:flex;
-      justify-content:space-between;
-      padding:6px 0;
-      border-bottom:1px dashed #ddd;
-    }
-    .card-field:last-child{border-bottom:none;}
-
-    .admin-box { text-align:center; margin-bottom:16px; }
-  </style>
+.card-field{display:flex;justify-content:space-between;border-bottom:1px dashed #ddd;padding:6px 0}
+.card-field:last-child{border-bottom:none}
+#errorMsg{display:none;color:#b00020;text-align:center;font-weight:bold}
+</style>
 </head>
 
 <body>
 <div class="container">
 
-  <div class="header">
-    <img src="./savannah-logo.png" class="logo" alt="Savannah Logo">
-    <div class="divider"></div>
-    <div class="tagline">A Legacy of Elegant Living</div>
-    <div class="page-title">Vehicle Registration Records</div>
-  </div>
+<div class="header">
+<img src="savannah-logo.png" class="logo">
+<div class="divider"></div>
+<div class="tagline">A Legacy of Elegant Living</div>
+<div class="page-title">Vehicle Registration Records</div>
+</div>
 
-  <h3>Pending Vehicle Registration – Society Wise</h3>
-  <div id="summaryCards" class="summary-grid"></div>
+<h3>Pending Vehicle Registration – Society Wise</h3>
+<div id="summaryCards" class="summary-grid"></div>
 
-  <!-- ADMIN SECTION -->
-  <h3>Admin Tools</h3>
-  <div class="admin-box">
-    <input type="password" id="adminKey" placeholder="Enter Society Admin Key" style="max-width:300px">
-    <button onclick="unlockAdmin()" style="max-width:300px;margin-top:8px">Unlock Admin</button>
-  </div>
+<h3>Admin Tools</h3>
+<div class="admin-box">
+<input type="password" id="adminKey" placeholder="Enter Society Admin Key" style="max-width:300px">
+<button onclick="unlockAdmin()" style="max-width:300px">Unlock Admin</button>
+</div>
 
-  <div id="adminSection" style="display:none">
+<div id="adminArea" class="hidden">
 
-    <h3>Pending Flat Numbers (Admin Only)</h3>
-    <div id="pendingSection"></div>
+<div class="admin-tabs">
+<button onclick="showPending()">Pending Flats</button>
+<button onclick="showVehicleLookup()">Vehicle Lookup</button>
+</div>
 
-    <h3 style="margin-top:40px">Vehicle Number Lookup (Admin Only)</h3>
-    <div class="admin-box">
-      <input id="vehicleInput" placeholder="Enter Vehicle Number (e.g. MH12AB1234)" style="max-width:300px">
-      <button onclick="searchVehicle()" style="max-width:300px;margin-top:8px">Search Vehicle</button>
-    </div>
-    <div id="vehicleResult" class="summary-grid"></div>
+<div id="pendingSection" class="hidden"></div>
 
-  </div>
+<div id="vehicleSection" class="hidden">
+<input id="vehicleInput" placeholder="Enter Vehicle Number (e.g. MH12AB1234)" style="max-width:300px;margin:auto">
+<button onclick="searchVehicle()" style="max-width:300px;margin:auto">Search Vehicle</button>
+<div id="vehicleResult" class="summary-grid"></div>
+</div>
 
-  <!-- RESIDENT LOOKUP -->
-  <h3>View Your Submitted Details</h3>
-  <input id="flatInput" autocomplete="off" placeholder="Enter Flat Number (e.g. K-103)">
-  <input id="emailInput" type="email" autocomplete="off" placeholder="Enter Email ID">
-  <button onclick="validateAndSearch()">View My Details</button>
-  <p id="errorMsg"></p>
-  <div id="cardContainer"></div>
+</div>
+
+<h3>View Your Submitted Details</h3>
+<input id="flatInput" placeholder="Enter Flat Number">
+<input id="emailInput" placeholder="Enter Email ID">
+<button onclick="validateAndSearch()">View My Details</button>
+<p id="errorMsg"></p>
+<div id="cardContainer"></div>
 
 </div>
 
@@ -142,113 +85,113 @@ const SHEET_NAME="Form Responses 1";
 const url=`https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NAME)}`;
 
 const SOCIETY_CONFIG={
- "Savannah A1":{buildings:["A1"],total:22},
- "Savannah 1":{buildings:["A","B","C","D"],total:112},
- "Savannah 2":{buildings:["E","F","G","H"],total:112},
- "Savannah 3":{buildings:["I","J","K"],total:84},
- "Savannah 4":{buildings:["L","M","N","O"],total:138},
- "Savannah PQ":{buildings:["P","Q"],total:110}
+"Savannah A1":{buildings:["A1"],total:22},
+"Savannah 1":{buildings:["A","B","C","D"],total:112},
+"Savannah 2":{buildings:["E","F","G","H"],total:112},
+"Savannah 3":{buildings:["I","J","K"],total:84},
+"Savannah 4":{buildings:["L","M","N","O"],total:138},
+"Savannah PQ":{buildings:["P","Q"],total:110}
 };
 
 const ADMIN_KEYS={
- "Savannah A1":"LOLE",
- "Savannah 1":"THAPA",
- "Savannah 2":"ANUP",
- "Savannah 3":"RAHUL",
- "Savannah 4":"TIWARI",
- "Savannah PQ":"PRADIP"
+"Savannah A1":"LOLE","Savannah 1":"THAPA","Savannah 2":"ANUP",
+"Savannah 3":"RAHUL","Savannah 4":"TIWARI","Savannah PQ":"PRADIP"
 };
 
 let allRows=[], unlockedSociety=null;
 
-const normalizeFlat=v=>v.toUpperCase().replace(/\s+/g,'').replace(/[–—]/g,'-');
-const getBuilding=f=>f.startsWith("A1")?"A1":f.charAt(0);
-const getSociety=b=>Object.keys(SOCIETY_CONFIG).find(s=>SOCIETY_CONFIG[s].buildings.includes(b));
+const normalize=v=>v.toUpperCase().replace(/\s+/g,'').replace(/[–—]/g,'-');
 
 function unlockAdmin(){
- const key=adminKey.value.trim();
- unlockedSociety=Object.keys(ADMIN_KEYS).find(s=>ADMIN_KEYS[s]===key);
- if(!unlockedSociety){alert("Invalid admin key");return;}
- adminSection.style.display="block";
- renderPending(unlockedSociety);
+const key=adminKey.value.trim();
+unlockedSociety=Object.keys(ADMIN_KEYS).find(s=>ADMIN_KEYS[s]===key);
+if(!unlockedSociety){alert("Invalid admin key");return;}
+adminArea.classList.remove("hidden");
+}
+
+function showPending(){
+pendingSection.classList.remove("hidden");
+vehicleSection.classList.add("hidden");
+renderPending();
+}
+
+function showVehicleLookup(){
+vehicleSection.classList.remove("hidden");
+pendingSection.classList.add("hidden");
 }
 
 function generateFlats(b){
- const f=[];
- if(b==="A1"){for(let i=1;i<=11;i++)f.push(`A1-${i}01`,`A1-${i}02`);return f;}
- if(["L","M","N","O"].includes(b)){
-  const s=b==="L"?2:4,max=b==="L"?42:32;
-  for(let i=1;i<=s;i++)f.push(`${b}-S${i}`);
-  for(let fl=1;f.length<max;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
-  return f;
- }
- if(b==="P"||b==="Q"){
-  const per=b==="P"?4:6;
-  for(let fl=1;fl<=11;fl++)for(let i=1;i<=per;i++)f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
-  return f;
- }
- for(let fl=1;f.length<28;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
- return f;
+const f=[];
+if(b==="A1"){for(let i=1;i<=11;i++)f.push(`A1-${i}01`,`A1-${i}02`);return f;}
+if(["L","M","N","O"].includes(b)){
+const s=b==="L"?2:4,max=b==="L"?42:32;
+for(let i=1;i<=s;i++)f.push(`${b}-S${i}`);
+for(let fl=1;f.length<max;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
+return f;}
+if(b==="P"||b==="Q"){
+const per=b==="P"?4:6;
+for(let fl=1;fl<=11;fl++)for(let i=1;i<=per;i++)f.push(`${b}-${fl}${String(i).padStart(2,"0")}`);
+return f;}
+for(let fl=1;f.length<28;fl++)f.push(`${b}-${fl}01`,`${b}-${fl}02`,`${b}-${fl}03`,`${b}-${fl}04`);
+return f;
 }
 
-function renderPending(soc){
- const submitted=new Set(allRows.map(r=>normalizeFlat(r["Flat Number"]||"")));
- pendingSection.innerHTML="";
- SOCIETY_CONFIG[soc].buildings.forEach(b=>{
-  const p=generateFlats(b).filter(f=>!submitted.has(normalizeFlat(f)));
-  if(p.length)pendingSection.innerHTML+=
-   `<div class="data-card"><b>${soc} – ${b}</b><br>Pending (${p.length})<br>${p.join(", ")}</div>`;
- });
+function renderPending(){
+pendingSection.innerHTML="";
+const submitted=new Set(allRows.map(r=>normalize(r["Flat Number"]||"")));
+SOCIETY_CONFIG[unlockedSociety].buildings.forEach(b=>{
+const p=generateFlats(b).filter(f=>!submitted.has(normalize(f)));
+if(p.length)pendingSection.innerHTML+=`<div class="data-card"><b>${b}</b><br>Pending (${p.length})<br>${p.join(", ")}</div>`;
+});
 }
 
 function searchVehicle(){
- if(!unlockedSociety){alert("Admin not unlocked");return;}
- const v=vehicleInput.value.toUpperCase().replace(/\s+/g,"");
- vehicleResult.innerHTML="";
- const m=allRows.filter(r=>
-  (r["Vehicle Number"]||"").toUpperCase().replace(/\s+/g,"")===v
- );
- if(!m.length){vehicleResult.innerHTML="<div class='summary-card'>No record found</div>";return;}
- m.forEach(r=>{
-  vehicleResult.innerHTML+=`
-   <div class="summary-card">
-    <b>Vehicle:</b> ${r["Vehicle Number"]||""}<br>
-    <b>Name:</b> ${r["Resident Name"]||r["Name"]||""}<br>
-    <b>Flat:</b> ${r["Flat Number"]||""}<br>
-    <b>Contact:</b> ${r["Contact Number"]||r["Mobile"]||""}
-   </div>`;
- });
+const v=vehicleInput.value.toUpperCase().replace(/\s+/g,"");
+vehicleResult.innerHTML="";
+const m=allRows.filter(r=>
+(r["Vehicle Number"]||"").toUpperCase().replace(/\s+/g,"")===v
+);
+if(!m.length){vehicleResult.innerHTML="<div class='summary-card'>No record found</div>";return;}
+m.forEach(r=>{
+vehicleResult.innerHTML+=`
+<div class="summary-card">
+<b>Vehicle:</b> ${r["Vehicle Number"]||""}<br>
+<b>Name:</b> ${r["Resident Name"]||r["Name"]||""}<br>
+<b>Flat:</b> ${r["Flat Number"]||""}<br>
+<b>Contact:</b> ${r["Contact Number"]||r["Mobile Number"]||r["Mobile"]||r["Phone Number"]||""}
+</div>`;
+});
 }
 
 function validateAndSearch(){
- const flat=normalizeFlat(flatInput.value);
- const email=emailInput.value.toLowerCase().trim();
- cardContainer.innerHTML=""; errorMsg.style.display="none";
- if(!flat||!email){errorMsg.textContent="Please enter both Flat Number and Email ID.";errorMsg.style.display="block";return;}
- const rows=allRows.filter(r=>
-  normalizeFlat(r["Flat Number"]||"")===flat &&
-  (r["Email"]||"").toLowerCase()===email
- );
- if(!rows.length){errorMsg.textContent="No matching record found.";errorMsg.style.display="block";return;}
- rows.forEach(r=>{
-  let h="";Object.keys(r).forEach(k=>h+=`<div class="card-field"><span>${k}</span><span>${r[k]}</span></div>`);
-  cardContainer.innerHTML+=`<div class="data-card">${h}</div>`;
- });
+const flat=normalize(flatInput.value);
+const email=emailInput.value.toLowerCase().trim();
+cardContainer.innerHTML="";errorMsg.style.display="none";
+if(!flat||!email){errorMsg.textContent="Please enter both Flat Number and Email ID.";errorMsg.style.display="block";return;}
+const rows=allRows.filter(r=>
+normalize(r["Flat Number"]||"")===flat &&
+(r["Email"]||"").toLowerCase()===email
+);
+if(!rows.length){errorMsg.textContent="No matching record found.";errorMsg.style.display="block";return;}
+rows.forEach(r=>{
+let h="";Object.keys(r).forEach(k=>h+=`<div class="card-field"><span>${k}</span><span>${r[k]}</span></div>`);
+cardContainer.innerHTML+=`<div class="data-card">${h}</div>`;
+});
 }
 
 fetch(url).then(r=>r.json()).then(d=>{
- allRows=d;
- const summary={},seen={};
- Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]=0;seen[s]=new Set();});
- d.forEach(r=>{
-  const f=normalizeFlat(r["Flat Number"]||"");
-  const s=getSociety(getBuilding(f));
-  if(s&&!seen[s].has(f)){seen[s].add(f);summary[s]++;}
- });
- Object.keys(SOCIETY_CONFIG).forEach(s=>{
-  summaryCards.innerHTML+=
-   `<div class="summary-card"><b>${s}</b><br>Total: ${SOCIETY_CONFIG[s].total}<br>Received: ${summary[s]}<br><span style="color:#b00020">Pending: ${SOCIETY_CONFIG[s].total-summary[s]}</span></div>`;
- });
+allRows=d;
+const summary={},seen={};
+Object.keys(SOCIETY_CONFIG).forEach(s=>{summary[s]=0;seen[s]=new Set();});
+d.forEach(r=>{
+const f=normalize(r["Flat Number"]||"");
+const b=f.startsWith("A1")?"A1":f.charAt(0);
+const s=Object.keys(SOCIETY_CONFIG).find(x=>SOCIETY_CONFIG[x].buildings.includes(b));
+if(s&&!seen[s].has(f)){seen[s].add(f);summary[s]++;}
+});
+Object.keys(SOCIETY_CONFIG).forEach(s=>{
+summaryCards.innerHTML+=`<div class="summary-card"><b>${s}</b><br>Total: ${SOCIETY_CONFIG[s].total}<br>Received: ${summary[s]}<br><span style="color:#b00020">Pending: ${SOCIETY_CONFIG[s].total-summary[s]}</span></div>`;
+});
 });
 </script>
 </body>
